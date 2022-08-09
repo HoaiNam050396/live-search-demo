@@ -1,7 +1,6 @@
 const initialState = {
     isLoading: false,
     data: [],
-    text: ''
   };
   
   export const reducersSearch = (state = initialState, action) => {
@@ -9,9 +8,13 @@ const initialState = {
       case 'SEARCH':
         return {
           ...state,
-          text: action.payload.data
+          data: action.payload
         };
-  
+      case 'LOADING':
+        return {
+          ...state,
+          isLoading: action.payload
+        }
       default:
         return state;
     }
