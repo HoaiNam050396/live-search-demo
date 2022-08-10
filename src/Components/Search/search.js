@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TableUser } from "../TableUser/displayTableUser";
 import useDebounce from '../../ultils/debounce'
 import { loading, search } from './data/actions'
+import Axios from '../../axiosApi/index'
 
 export const Search = (props) => {
   const [textAlert, setTextAlert] = useState('')
@@ -20,19 +21,13 @@ export const Search = (props) => {
     setIsCheckCharacter(e?.target.value)
     if (e?.target.value.length >= 3) {
       dispatch(loading(true))
-      await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(e.target.value)}`, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json()).then(data => {
-        const dataFetch = []
-        data.items.map(e => {
-          return dataFetch.push({ avatar: e.avatar_url, name: e.login, type: e.type, score: e.score })
-        })
+      const data = await Axios.get(`https://api.github.com/search/users?q=${encodeURIComponent(e.target.value)}`)
+      const dataFetch = []
+      data.data.items.map(e => {
+        return dataFetch.push({ avatar: e.avatar_url, name: e.login, type: e.type, score: e.score })
+      })
+      dataFetch && dispatch(search(dataFetch))
         dispatch(loading(false))
-        dataFetch && dispatch(search(dataFetch))
-      }
-      ).catch(error => console.log(error))
     } else {
       setTextAlert('You should input at least 3 characters')
     }
