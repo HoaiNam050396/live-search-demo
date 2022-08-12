@@ -1,22 +1,16 @@
 import axios from "axios"
 
-export default axios.create({
-    get: (url, param) => {
-        axios.get(`${url}/${param}`, {
-            headers: {
-                'Content-Type': 'application/json'
-              }
-        })
-        .then(res => res.data)
-        .catch(error => console.log(error))
-    },
-    post: (url, param) => {
-        axios.post(`${url}/${param}`, {
-            headers: {
-                'Content-Type': 'application/json'
-              }
-        })
-        .then(res => res.data)
-        .catch(error => console.log(error))
-    }
-})
+export const ApiClient = axios.create({
+      // method: method,
+      // url: url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      // params: params,
+      // data: data,
+      // config: config
+    })
+
+
+

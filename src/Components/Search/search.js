@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TableUser } from "../TableUser/displayTableUser";
 import useDebounce from '../../ultils/debounce'
 import { loading, search } from './data/actions'
-import Axios from '../../axiosApi/index'
+import {ApiClient, getClient} from '../../axiosApi/index'
 
 export const Search = (props) => {
   const [textAlert, setTextAlert] = useState('')
@@ -21,7 +21,7 @@ export const Search = (props) => {
     setIsCheckCharacter(e?.target.value)
     if (e?.target.value.length >= 3) {
       dispatch(loading(true))
-      const data = await Axios.get(`https://api.github.com/search/users?q=${encodeURIComponent(e.target.value)}`)
+      const data = await ApiClient.get(`https://api.github.com/search/users?q=${encodeURIComponent(e.target.value)}`)
       const dataFetch = []
       data.data.items.map(e => {
         return dataFetch.push({ avatar: e.avatar_url, name: e.login, type: e.type, score: e.score })
@@ -32,6 +32,7 @@ export const Search = (props) => {
       setTextAlert('You should input at least 3 characters')
     }
   };
+  
   return (
     <>
       <p style={{textAlign: 'center', fontSize: 'x-large'}}>Welcome!!!</p>
